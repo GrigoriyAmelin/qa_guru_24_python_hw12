@@ -2,21 +2,28 @@ import os
 
 from selene import browser as br, by, be, have
 
+from demoqa.pages.registration_page import RegistrationPage
+
 
 def test_practice_form_filling_up():
-    br.open('/automation-practice-form')
-    br.driver.execute_script("$('#fixedban').remove()")
-    br.driver.execute_script("$('footer').remove()")
 
-    # Проверка открытия требуемой страницы
-    br.element(".practice-form-wrapper").element('.text-center').should(have.text('Practice Form'))
+    registration_page = RegistrationPage()
+
+    registration_page.open_page()
+    registration_page.should_be_open()
+
+    registration_page.fill_first_name('Mirko')
+    registration_page.fill_last_name('Stojanovic')
+    registration_page.fill_user_email('mirko-stojanovic@srbijavoz.rs')
+    registration_page.fill_gender('Male')
+    registration_page.fill_phone_number('0682826586')
 
     # Ввод основных данных пользователя
-    br.element('#firstName').type('Mirko')
-    br.element('#lastName').type('Stojanovic')
-    br.element('#userEmail').type('mirko-stojanovic@srbijavoz.rs')
-    br.element(by.text("Male")).click().should(be.enabled)
-    br.element('#userNumber').type('0682826586')
+
+
+
+
+
 
     # Установка даты в календаре
     br.element("#dateOfBirthInput").click()
