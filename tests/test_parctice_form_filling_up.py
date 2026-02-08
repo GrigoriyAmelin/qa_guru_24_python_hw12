@@ -1,81 +1,47 @@
-import os
-
-from selene import browser as br, by, be, have
-
 from demoqa.pages.registration_page import RegistrationPage
 
 
 def test_practice_form_filling_up():
+    registration_page = RegistrationPage('Mirko',
+                                         'Stojanovic',
+                                         'mirko-stojanovic@srbijavoz.rs',
+                                         'Male',
+                                         '0682826586',
+                                         '111.png')
 
-    registration_page = RegistrationPage()
+    (
+        registration_page
+        .open_page()
+        .should_be_open()
+        .fill_first_name()
+        .fill_last_name()
+        .fill_user_email()
+        .fill_gender()
+        .fill_phone_number()
+        .fill_date_of_birth('08', 'October', '1979')
+        .select_subject_by_keys('e', 'English')
+        .select_subject_by_keys('erc', 'Commerce')
+        .select_subject_by_keys('a', 'Arts')
+        .select_hobby('Reading')
+        .upload_file()
+        .fill_address('11545 Novi Sad, Srbija, ul. Cara Dusana, 9, sprat 2, stan 231')
+        .select_state('Haryana')
+        .select_city('Panipat')
+    )
 
-    registration_page.open_page()
-    registration_page.should_be_open()
-
-    registration_page.fill_first_name('Mirko')
-    registration_page.fill_last_name('Stojanovic')
-    registration_page.fill_user_email('mirko-stojanovic@srbijavoz.rs')
-    registration_page.fill_gender('Male')
-    registration_page.fill_phone_number('0682826586')
-
-    # Ввод основных данных пользователя
-
-
-
-
-
-
-    # Установка даты в календаре
-    br.element("#dateOfBirthInput").click()
-    br.element('.react-datepicker__month-select').element(by.text('October')).click()
-    br.element('.react-datepicker__year-select').element(by.text('1979')).click()
-    br.element('.react-datepicker__month').element('.react-datepicker__day--008').click()
-
-    # Выбор предмета
-    br.element('#subjectsInput').send_keys('e')
-    br.element(by.text('English')).click()
-    br.element('#subjectsInput').send_keys('erc')
-    br.element(by.text('Commerce')).click()
-    br.element('#subjectsInput').send_keys('a')
-    br.element(by.text('Arts')).click()
-
-    # Выбор хобби
-    br.element(by.text('Reading')).click()
-    br.element('#hobbies-checkbox-2').should(be.enabled)
-
-    # Загрузка файла
-    dirname: str = os.path.dirname(os.path.abspath(__file__))
-    abspath = os.path.join(dirname, 'resources', '111.png')
-    br.element("#uploadPicture").send_keys(abspath)
-
-    # Выбор адреса
-    br.element('#currentAddress').set_value('11545 Novi Sad, Srbija, ul. Cara Dusana, 9, sprat 2, stan 231')
-    br.element('#state').click()
-    br.element(by.text('Haryana')).click()
-    br.element('#city').click()
-    br.element(by.text('Panipat')).click()
-
-    br.element('#submit').click()
-
-    # Проверка формы
-    br.element('#example-modal-sizes-title-lg').should(have.text('Thanks for submitting the form'))
-    (br.element('.table-responsive').element(by.text('Student Name')).element('..').
-     should(have.text('Mirko Stojanovic')))
-    (br.element('.table-responsive').element(by.text('Student Email')).element('..').
-     should(have.text('mirko-stojanovic@srbijavoz.rs')))
-    (br.element('.table-responsive').element(by.text('Gender')).element('..').
-     should(have.text('Male')))
-    (br.element('.table-responsive').element(by.text('Mobile')).element('..').
-     should(have.text('0682826586')))
-    (br.element('.table-responsive').element(by.text('Date of Birth')).element('..').
-     should(have.text('08 October,1979')))
-    (br.element('.table-responsive').element(by.text('Subjects')).element('..').
-     should(have.text('English, Commerce, Arts')))
-    (br.element('.table-responsive').element(by.text('Hobbies')).element('..').
-     should(have.text('Reading')))
-    (br.element('.table-responsive').element(by.text('Picture')).element('..').
-     should(have.text('111.png')))
-    (br.element('.table-responsive').element(by.text('Address')).element('..').
-     should(have.text('11545 Novi Sad, Srbija, ul. Cara Dusana, 9, sprat 2, stan 231')))
-    (br.element('.table-responsive').element(by.text('State and City')).element('..').
-     should(have.text('Haryana Panipat')))
+    (
+        registration_page
+        .submit_form()
+        .should_have_submited_form_with_text('Thanks for submitting the form')
+        .should_have_registered_user_with_data('Student Name', 'Mirko Stojanovic')
+        .should_have_registered_user_with_data('Student Email', 'mirko-stojanovic@srbijavoz.rs')
+        .should_have_registered_user_with_data('Gender', 'Male')
+        .should_have_registered_user_with_data('Mobile', '0682826586')
+        .should_have_registered_user_with_data('Date of Birth', '08 October,1979')
+        .should_have_registered_user_with_data('Subjects', 'English, Commerce, Arts')
+        .should_have_registered_user_with_data('Hobbies', 'Reading')
+        .should_have_registered_user_with_data('Picture', '111.png')
+        .should_have_registered_user_with_data('Address',
+                                               '11545 Novi Sad, Srbija, ul. Cara Dusana, 9, sprat 2, stan 231')
+        .should_have_registered_user_with_data('State and City', 'Haryana Panipat')
+    )
