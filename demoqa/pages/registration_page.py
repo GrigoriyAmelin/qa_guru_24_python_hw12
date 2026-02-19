@@ -1,6 +1,7 @@
 import os
 
 from selene import browser as br, have, by, be
+from selene import command
 
 
 class RegistrationPage:
@@ -13,9 +14,9 @@ class RegistrationPage:
         self.file_name = file_name_to_upload
 
     def open_page(self):
-        br.open('/automation-practice-form')
-        br.driver.execute_script("$('#fixedban').remove()")
-        br.driver.execute_script("$('footer').remove()")
+        br.open('/')
+        br.element('a[href="/forms"]').click()
+        br.element('a[href="/automation-practice-form"]').click()
         return self
 
     def should_be_open(self):
@@ -50,8 +51,8 @@ class RegistrationPage:
         return self
 
     def select_subject_by_keys(self, keys, subject):
-        br.element('#subjectsInput').send_keys(keys)
-        br.element(by.text(subject)).click()
+        br.element('#subjectsInput').perform(command.js.scroll_into_view).send_keys(keys)
+        br.element(by.text(subject)).perform(command.js.scroll_into_view).click()
         return self
 
     def select_hobby(self, hobby):
