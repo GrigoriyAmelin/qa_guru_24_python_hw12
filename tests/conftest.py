@@ -1,5 +1,6 @@
+import allure_commons
 import pytest
-from selene import browser
+from selene import browser, support
 from selenium import webdriver
 
 

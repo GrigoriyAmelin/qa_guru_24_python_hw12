@@ -1,6 +1,16 @@
+import allure
+from allure_commons.types import Severity
+
 from demoqa.pages.registration_page import RegistrationPage
 
 
+@allure.tag('web')
+@allure.severity(Severity.MINOR)
+@allure.label('owner', 'gamelin')
+@allure.feature('Страница Practice Form')
+@allure.story('Пользователь может ввести свои учетные данные и зарегистрироваться')
+@allure.link('https://demoqa.com/automation-practice-form', name='Practice Form page')
+@allure.title('Заполнить форму и зарегистрироваться')
 def test_practice_form_filling_up():
     registration_page = RegistrationPage('Mirko',
                                          'Stojanovic',
