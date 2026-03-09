@@ -22,7 +22,6 @@ def browser_settings():
         command_executor="https://user1:1234@selenoid.autotests.cloud/wd/hub",
         options=options
     )
-
     browser.config.driver = driver
 
     browser.config._wait_decorator = support._logging.wait_with(
