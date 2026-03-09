@@ -14,6 +14,10 @@ def browser_settings():
     driver_options.page_load_strategy = 'eager'
     browser.config.driver_options = driver_options
 
+    browser.config._wait_decorator = support._logging.wait_with(
+        context=allure_commons._allure.StepContext
+    )
+
     yield
 
     browser.quit()
